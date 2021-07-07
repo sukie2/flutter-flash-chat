@@ -1,14 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flash_chat/widgets/primary_button.dart';
 import 'package:flutter_flash_chat/widgets/primary_text.dart';
 
+import 'chat_screen.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
+
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  String email = "";
+  String password = "";
+  final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,14 +39,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             PrimaryText(
               hint: 'Enter your email.',
-              onChanged: (str) {},
+              onChanged: (str) {
+                email = str;
+              },
             ),
             SizedBox(
               height: 8.0,
             ),
             PrimaryText(
               hint: 'Enter your password.',
-              onChanged: (str) {},
+              onChanged: (str) {
+                password = password;
+              },
+              isPassword: true,
             ),
             SizedBox(
               height: 24.0,
@@ -46,7 +59,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             PrimaryButton(
               buttonText: 'Register',
               color: Colors.blueAccent,
-              action: () {},
+              action: () async {
+                final newUser = await _auth.createUserWithEmailAndPassword(
+                    email: email, password: password);
+                Navigator.pushNamed(context, ChatScreen.id);
+              },
             ),
           ],
         ),
