@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flash_chat/screens/login_screen.dart';
 import 'package:flutter_flash_chat/widgets/primary_button.dart';
 import 'package:flutter_flash_chat/widgets/primary_text.dart';
-
-import 'chat_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -49,7 +48,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             PrimaryText(
               hint: 'Enter your password.',
               onChanged: (str) {
-                password = password;
+                password = str;
               },
               isPassword: true,
             ),
@@ -60,9 +59,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               buttonText: 'Register',
               color: Colors.blueAccent,
               action: () async {
-                final newUser = await _auth.createUserWithEmailAndPassword(
-                    email: email, password: password);
-                Navigator.pushNamed(context, ChatScreen.id);
+                try {
+                  UserCredential userCredential = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                          email: email, password: password);
+                  Navigator.pushNamed(context, LoginScreen.id);
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'weak-password') {
+                    print('The password provided is too weak.');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('The account already exists for that email.');
+                  }
+                } catch (e) {
+                  print(e);
+                }
               },
             ),
           ],
