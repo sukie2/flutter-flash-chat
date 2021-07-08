@@ -17,18 +17,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   String message = "";
 
-  void getMessages() async {
-    var collection = FirebaseFirestore.instance.collection('messages');
-    var querySnapshot = await collection.get();
-    for (var queryDocumentSnapshot in querySnapshot.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var name = data['sender'];
-      var text = data['text'];
-
-      print(text);
-    }
-  }
-
   Future<void> addMessage() {
     return messages
         .add(
