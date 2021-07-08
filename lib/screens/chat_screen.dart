@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flash_chat/widgets/chat_message_idget.dart';
 
 import '../constants.dart';
 
@@ -10,10 +12,30 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  var _auth = FirebaseAuth.instance;
+  CollectionReference messages =
+      FirebaseFirestore.instance.collection('messages');
 
-  @override
-  void initState() {}
+  String message = "";
+
+  void getMessages() async {
+    var collection = FirebaseFirestore.instance.collection('messages');
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+      var name = data['sender'];
+      var text = data['text'];
+
+      print(text);
+    }
+  }
+
+  Future<void> addMessage() {
+    return messages
+        .add(
+            {'sender': FirebaseAuth.instance.currentUser?.uid, 'text': message})
+        .then((value) => print("Message Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                //Implement logout functionality
+                FirebaseAuth.instance.signOut();
               }),
         ],
         title: Text('⚡️Chat'),
@@ -35,6 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            ChatMessage(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -43,14 +66,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        //Do something with the user input.
+                        message = value;
                       },
                       decoration: kMessageTextFieldDecoration,
                     ),
                   ),
                   FlatButton(
                     onPressed: () {
-                      //Implement send functionality.
+                      addMessage();
                     },
                     child: Text(
                       'Send',
