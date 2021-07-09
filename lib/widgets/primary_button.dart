@@ -17,6 +17,7 @@ class PrimaryButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30.0),
         elevation: 5.0,
         child: MaterialButton(
+          textColor: Colors.white,
           onPressed: action,
           minWidth: 200.0,
           height: 42.0,

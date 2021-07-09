@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flash_chat/widgets/chat_message_idget.dart';
+import 'package:flutter_flash_chat/widgets/chat_message_bubble.dart';
 
 import '../constants.dart';
 
@@ -14,13 +14,16 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   CollectionReference messages =
       FirebaseFirestore.instance.collection('messages');
+  var _controller = TextEditingController();
 
   String message = "";
 
   Future<void> addMessage() {
     return messages
-        .add(
-            {'sender': FirebaseAuth.instance.currentUser?.uid, 'text': message})
+        .add({
+          'sender': FirebaseAuth.instance.currentUser?.email,
+          'text': message
+        })
         .then((value) => print("Message Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
@@ -45,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            ChatMessage(),
+            ChatBubble(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -53,6 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      controller: _controller,
                       onChanged: (value) {
                         message = value;
                       },
@@ -61,6 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   FlatButton(
                     onPressed: () {
+                      _controller.clear();
                       addMessage();
                     },
                     child: Text(
