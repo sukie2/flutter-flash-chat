@@ -7,4 +7,4 @@ Project demonstrates building a simple chat application using **Flutter** framew
 - Firebase Firestore message storage.
 
 # Screenshots
-![alt text](screenshots/img3.png)   ![alt text](screenshots/img2.png)   ![alt text](screenshots/img1.png)
+![alt text](screenshots/img3.png)   ![alt text](screenshots/img1.png)
