@@ -5,3 +5,6 @@ Project demonstrates building a simple chat application using **Flutter** framew
 # Tech stack
 Firebase authentication
 Firebase Firestore
+
+# Screenshots
+![alt text](screenshots/img3.png)   ![alt text](screenshots/img2.png)   ![alt text](screenshots/img1.png)
