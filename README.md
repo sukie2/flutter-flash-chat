@@ -1,16 +1,7 @@
-# flutter_flash_chat
+# Flutter Chat on Firebase
 
-A new Flutter project.
+Project demonstrates building a simple chat application using **Flutter** framework and **Firebase** cloud. App does not poll for new messages, instead streams are used to make it reactive.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Tech stack
+Firebase authentication
+Firebase Firestore
